@@ -1,12 +1,11 @@
 import importlib
 from werkzeug.exceptions import HTTPException, NotFound
-from werkzeug.routing import Map
 from werkzeug.wrappers import Request, Response
 
 class Router:
     def __init__(self, url_map):
         self.request = None
-        self.urls = Map(url_map)
+        self.urls = url_map
 
     def dispatch_request(self, environ):
         self.request = Request(environ)
@@ -38,7 +37,7 @@ class Router:
 
         try:
             return Response(getattr(module, action)(self.request, **values))
-            
+
         except Exception as e:
             print("\n[ERROR]: No '"+action+"' method found in "+controller)
             return e
